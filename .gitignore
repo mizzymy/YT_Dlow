@@ -1,0 +1,6 @@
+node_modules/
+.env
+.env.local
+backend/bin/
+backend/tmp/
+.next/
