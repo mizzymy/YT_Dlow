@@ -1,8 +1,7 @@
 [build]
 builder = "DOCKER"
 dockerfilePath = "backend/Dockerfile"
-watchPatterns = ["backend/**"]
+buildContext = "backend"
 
 [deploy]
-startCommand = "node backend/server.js"
 restartPolicyType = "on_failure"

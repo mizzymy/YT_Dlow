@@ -18,13 +18,25 @@ const {
 
 const PORT = process.env.PORT || 3001;
 const API_KEY = process.env.API_KEY || "";
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
+const FRONTEND_URL = process.env.FRONTEND_URL || "";
 
 const app = express();
 app.use(express.json());
+
+// Allow any origin if FRONTEND_URL not set (open during initial setup),
+// or match against a comma-separated list of allowed origins.
+const allowedOrigins = FRONTEND_URL
+  ? FRONTEND_URL.split(",").map((u) => u.trim())
+  : null;
+
 app.use(
   cors({
-    origin: FRONTEND_URL,
+    origin: (origin, callback) => {
+      // Allow server-to-server requests (no origin) or if open
+      if (!allowedOrigins || !origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      callback(new Error(`CORS: origin ${origin} not allowed`));
+    },
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type", "X-API-Key"],
   })
