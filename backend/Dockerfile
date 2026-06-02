@@ -9,8 +9,8 @@ RUN apt-get update && \
 WORKDIR /app
 
 # Install dependencies
-COPY package.json package-lock.json* ./
-RUN npm ci --production
+COPY package.json ./
+RUN npm install --omit=dev
 
 # Copy source
 COPY . .
